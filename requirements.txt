@@ -1,0 +1,8 @@
+requests
+plac
+tqdm
+matplotlib
+
+black
+
+-e .
