@@ -3,6 +3,7 @@ plac
 tqdm
 matplotlib
 pandas
+spacy
 
 pytest
 assertpy

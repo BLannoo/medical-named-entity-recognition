@@ -8,7 +8,7 @@ from src.definitions import PROJECT_ROOT
 
 
 def download_data(
-        num_examples: int = 100,
+    num_examples: int = 100,
 ):
     for abstract_id in tqdm(range(1, num_examples)):
         abstract = download_single_abstract(abstract_id)
@@ -16,9 +16,9 @@ def download_data(
 
 
 def save_to_corpus(
-        abstract: str,
-        abstract_id: int,
-        project_root: Path = PROJECT_ROOT,
+    abstract: str,
+    abstract_id: int,
+    project_root: Path = PROJECT_ROOT,
 ) -> None:
     dir_size = 100
     dir_start = abstract_id // dir_size * dir_size

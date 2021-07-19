@@ -9,11 +9,7 @@ from src.download_data import download_single_abstract, save_to_corpus
 def test_download_single_abstract():
     parsed = json.loads(download_single_abstract(1))
     assert_that(parsed).has_id("1")
-    assert_that(
-        parsed["passages"]
-    ).extracting(
-        "text"
-    ).contains(
+    assert_that(parsed["passages"]).extracting("text").contains(
         "Formate assay in body fluids: application in methanol poisoning."
     )
 
