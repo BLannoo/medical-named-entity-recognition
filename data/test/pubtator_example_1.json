@@ -1,0 +1,79 @@
+{
+  "_id": "1|None",
+  "id": "1",
+  "infons": {},
+  "passages": [
+    {
+      "infons": {
+        "journal": "Biochem Med; 1975 Jun; 13(2) 117-26",
+        "year": "1975",
+        "type": "title",
+        "authors": "Makar AB, McMartin KE, Palese M, Tephly TR",
+        "section": "Title"
+      },
+      "offset": 0,
+      "text": "Formate assay in body fluids: application in methanol poisoning.",
+      "sentences": [],
+      "annotations": [
+        {
+          "id": "2",
+          "infons": {
+            "identifier": "MESH:D000432",
+            "type": "Chemical"
+          },
+          "text": "methanol",
+          "locations": [
+            {
+              "offset": 45,
+              "length": 8
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "infons": {
+            "identifier": "MESH:D011041",
+            "type": "Disease"
+          },
+          "text": "poisoning",
+          "locations": [
+            {
+              "offset": 54,
+              "length": 9
+            }
+          ]
+        }
+      ],
+      "relations": []
+    },
+    {
+      "infons": {
+        "type": "abstract",
+        "section": "Abstract"
+      },
+      "offset": 65,
+      "text": "",
+      "sentences": [],
+      "annotations": [],
+      "relations": []
+    }
+  ],
+  "relations": [],
+  "pmid": 1,
+  "pmcid": null,
+  "created": {
+    "$date": 1592598838791
+  },
+  "accessions": [
+    "chemical@MESH:D000432",
+    "disease@MESH:D011041"
+  ],
+  "journal": "Biochem Med",
+  "year": 1975,
+  "authors": [
+    "Makar AB",
+    "McMartin KE",
+    "Palese M",
+    "Tephly TR"
+  ]
+}

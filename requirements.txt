@@ -2,6 +2,7 @@ requests
 plac
 tqdm
 matplotlib
+pandas
 
 pytest
 assertpy

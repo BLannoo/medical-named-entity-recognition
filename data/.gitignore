@@ -5,6 +5,9 @@
 !**/
 !/*
 
+# Include files used for testing
+!/test/*
+
 # Include git files
 !.gitignore
 !.gitkeep

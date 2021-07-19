@@ -7,7 +7,7 @@ from tqdm import tqdm
 from src.definitions import PROJECT_ROOT
 
 
-def main(
+def download_data(
         num_examples: int = 100,
 ):
     for abstract_id in tqdm(range(1, num_examples)):
@@ -44,4 +44,4 @@ def download_single_abstract(abstract_id: int) -> str:
 
 
 if __name__ == "__main__":
-    plac.call(main)
+    plac.call(download_data)
