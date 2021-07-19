@@ -4,21 +4,29 @@ import plac
 import requests
 from tqdm import tqdm
 
+from src.definitions import PROJECT_ROOT
+
 
 def main(
-    num_examples: int = 100,
+        num_examples: int = 100,
 ):
     for abstract_id in tqdm(range(1, num_examples)):
         abstract = download_single_abstract(abstract_id)
         save_to_corpus(abstract, abstract_id)
 
 
-def save_to_corpus(abstract: str, abstract_id: int) -> None:
-    folder_size = 100
-    folder_start = abstract_id // folder_size * folder_size
-    folder = Path(f"./data/raw/{folder_start}to{folder_start + folder_size}")
-    folder.mkdir(exist_ok=True)
-    file_path = folder / f"{abstract_id}.json"
+def save_to_corpus(
+        abstract: str,
+        abstract_id: int,
+        project_root: Path = PROJECT_ROOT,
+) -> None:
+    dir_size = 100
+    dir_start = abstract_id // dir_size * dir_size
+    dir = Path(project_root / f"data/raw/{dir_start}to{dir_start + dir_size - 1}")
+    dir.parent.parent.mkdir(exist_ok=True)
+    dir.parent.mkdir(exist_ok=True)
+    dir.mkdir(exist_ok=True)
+    file_path = dir / f"{abstract_id}.json"
     file_path.open("w").write(abstract)
 
 
