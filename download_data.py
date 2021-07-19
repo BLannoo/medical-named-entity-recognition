@@ -16,7 +16,7 @@ def main(
 def save_to_corpus(abstract: str, abstract_id: int) -> None:
     folder_size = 100
     folder_start = abstract_id // folder_size * folder_size
-    folder = Path(f"./data/{folder_start}to{folder_start + folder_size}")
+    folder = Path(f"./data/raw/{folder_start}to{folder_start + folder_size}")
     folder.mkdir(exist_ok=True)
     file_path = folder / f"{abstract_id}.json"
     file_path.open("w").write(abstract)
