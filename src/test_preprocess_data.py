@@ -9,12 +9,12 @@ from pandas._testing import assert_frame_equal
 
 from src.definitions import PROJECT_ROOT
 from src.preprocess_data import (
-    engineer_features,
     list_all_pubtator_jsons,
     extract_annotated_passages,
     Annotation,
     AnnotatedPassage,
     generate_all_annotated_tokens,
+    preprocess_data,
 )
 
 
@@ -30,7 +30,7 @@ def setup_raw_data_on_tmp_path(tmp_path):
 
 
 def test_engineer_features(tmp_path):
-    engineer_features(project_root=tmp_path)
+    preprocess_data(project_root=tmp_path)
 
     assert_frame_equal(
         left=pd.read_csv(PROJECT_ROOT / "data/processed/token_with_features.csv"),
