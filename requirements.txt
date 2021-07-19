@@ -3,6 +3,9 @@ plac
 tqdm
 matplotlib
 
+pytest
+assertpy
+
 black
 
 -e .
