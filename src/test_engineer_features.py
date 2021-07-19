@@ -7,7 +7,8 @@ from assertpy import assert_that
 from pandas._testing import assert_frame_equal
 
 from src.definitions import PROJECT_ROOT
-from src.engineer_features import engineer_features, list_all_pubtator_jsons, extract_annotated_passages, Annotation
+from src.engineer_features import engineer_features, list_all_pubtator_jsons, extract_annotated_passages, Annotation, \
+    AnnotatedPassage
 
 
 @pytest.fixture(autouse=True)
@@ -59,13 +60,13 @@ def test_extract_annotated_passages():
     )
     assert_that(annotated_passages).is_length(1)
     assert_that(
-        annotated_passages[0].text
+        annotated_passages[0]
     ).is_equal_to(
-        "Formate assay in body fluids: application in methanol poisoning."
-    )
-    assert_that(
-        annotated_passages[0].annotations
-    ).contains(
-        Annotation(offset=45, length=8, type="Chemical"),
-        Annotation(offset=54, length=9, type="Disease"),
+        AnnotatedPassage(
+            text="Formate assay in body fluids: application in methanol poisoning.",
+            annotations=[
+                Annotation(offset=45, length=8, type="Chemical"),
+                Annotation(offset=54, length=9, type="Disease"),
+            ]
+        )
     )
