@@ -9,5 +9,6 @@ pytest
 assertpy
 
 black
+pre-commit
 
 -e .

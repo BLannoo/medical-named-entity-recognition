@@ -9,7 +9,14 @@ and the open source data set from pubtator:
 
 # Setup
 
+## Spacy
 ```bash
 pip install -r requirements
 python -m spacy download en_core_web_sm
+```
+
+## pre-commit
+```bash
+pip install -r requirements
+pre-commit install
 ```
