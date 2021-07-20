@@ -55,6 +55,7 @@ def parse_passage(
                 "pubtator_id": pubtator_id,
                 "passage_id": passage_id,
                 "words": token.text,
+                "POS": token.pos_,
                 "labels": determine_label(token, passage),
             }
             for token in nlp(passage["text"])

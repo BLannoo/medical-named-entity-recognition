@@ -20,34 +20,38 @@ def test_preprocess_data(tmp_path: Path):
 
     assert_that(word_as_dict("methanol")).is_equal_to(
         {
-            "labels": "B-Chemical",
             "passage_id": 0,
             "pubtator_id": 1,
             "words": "methanol",
+            "POS": "NOUN",
+            "labels": "B-Chemical",
         }
     )
     assert_that(word_as_dict("poisoning")).is_equal_to(
         {
-            "labels": "B-Disease",
             "passage_id": 0,
             "pubtator_id": 1,
             "words": "poisoning",
+            "POS": "NOUN",
+            "labels": "B-Disease",
         }
     )
     assert_that(word_as_dict("pyridine")).is_equal_to(
         {
-            "labels": "B-Chemical",
             "passage_id": 0,
             "pubtator_id": 2,
             "words": "pyridine",
+            "POS": "NOUN",
+            "labels": "B-Chemical",
         }
     )
     assert_that(word_as_dict("nucleotide")).is_equal_to(
         {
-            "labels": "I-Chemical",
             "passage_id": 0,
             "pubtator_id": 2,
             "words": "nucleotide",
+            "POS": "NOUN",
+            "labels": "I-Chemical",
         }
     )
 
