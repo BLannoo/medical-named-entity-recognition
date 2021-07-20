@@ -59,7 +59,9 @@ def parse_passage(
                     annotation["infons"]["type"]
                     for annotation in passage["annotations"]
                     for location in annotation["locations"]
-                    if location["offset"] == token.idx
+                    if location["offset"]
+                    <= token.idx
+                    < location["offset"] + location["length"]
                 ],
             }
             for token in nlp(passage["text"])
