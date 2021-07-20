@@ -55,17 +55,28 @@ def parse_passage(
                 "pubtator_id": pubtator_id,
                 "passage_id": passage_id,
                 "words": token.text,
-                "labels": [
-                    annotation["infons"]["type"]
-                    for annotation in passage["annotations"]
-                    for location in annotation["locations"]
-                    if location["offset"]
-                    <= token.idx
-                    < location["offset"] + location["length"]
-                ],
+                "labels": determine_label(token, passage),
             }
             for token in nlp(passage["text"])
         ]
+    )
+
+
+def determine_label(token, passage):
+    all_labels = [
+        ("B-" if location["offset"] == token.idx else "I-")
+        + annotation["infons"]["type"]
+        for annotation in passage["annotations"]
+        for location in annotation["locations"]
+        if (location["offset"] <= token.idx < location["offset"] + location["length"])
+    ]
+    if len(all_labels) == 0:
+        return "O"
+    if len(all_labels) == 1:
+        return all_labels[0]
+    raise Exception(
+        f"'{token.text}' matched with multiple "
+        f"labels '{all_labels}' in passage '{passage}'"
     )
 
 
