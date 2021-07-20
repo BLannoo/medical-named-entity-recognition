@@ -10,5 +10,7 @@ assertpy
 
 black
 pre-commit
+jupyterlab
+nbstripout
 
 -e .
