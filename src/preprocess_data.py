@@ -7,6 +7,7 @@ from typing import List
 import pandas as pd
 import plac
 import spacy
+from tqdm import tqdm
 
 from src.definitions import PROJECT_ROOT
 
@@ -22,7 +23,7 @@ def preprocess_data(
     df = pd.concat(
         [
             parse_passage(passage, example["id"], idx, nlp)
-            for example in examples
+            for example in tqdm(examples)
             for idx, passage in enumerate(example["passages"])
             if passage["text"] != ""
         ]

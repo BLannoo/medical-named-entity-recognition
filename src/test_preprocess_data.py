@@ -55,5 +55,5 @@ def test_preprocess_data(tmp_path: Path):
         }
     )
 
-    expected = pd.read_csv(PROJECT_ROOT / "data/test/expected_labeled_passages.csv")
+    expected = pd.read_csv(PROJECT_ROOT / "data/test/labeled_passages.csv")
     pd.testing.assert_frame_equal(left=actual, right=expected)
