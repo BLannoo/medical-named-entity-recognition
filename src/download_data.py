@@ -9,10 +9,12 @@ from src.definitions import PROJECT_ROOT
 
 def download_data(
     num_examples: int = 100,
+    starting_example: int = 1,
 ):
-    for abstract_id in tqdm(range(1, num_examples)):
+    for abstract_id in tqdm(range(starting_example, starting_example + num_examples)):
         abstract = download_single_abstract(abstract_id)
-        save_to_corpus(abstract, abstract_id)
+        if abstract is not None:
+            save_to_corpus(abstract, abstract_id)
 
 
 def save_to_corpus(
@@ -31,16 +33,21 @@ def save_to_corpus(
 
 
 def download_single_abstract(abstract_id: int) -> str:
-    response = requests.post(
-        "https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications/export/biocjson",
-        json={"pmids": [abstract_id]},
-    )
-    if response.status_code != 200:
-        print(f"[Error]: HTTP code {response.status_code} for {abstract_id=}")
-    elif response.text == "":
-        print(f"[Error]: empty body for {abstract_id=}")
-    else:
-        return response.text
+    try:
+        response = requests.post(
+            "https://www.ncbi.nlm.nih.gov/"
+            "research/pubtator-api/publications/export/biocjson",
+            json={"pmids": [abstract_id]},
+        )
+
+        if response.status_code != 200:
+            print(f"[Error]: HTTP code {response.status_code} for {abstract_id=}")
+        elif response.text == "":
+            print(f"[Error]: empty body for {abstract_id=}")
+        else:
+            return response.text
+    except ConnectionError as e:
+        print(f"[Exception]: for {abstract_id=}: {e}")
 
 
 if __name__ == "__main__":
