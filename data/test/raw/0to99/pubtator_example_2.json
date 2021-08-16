@@ -1,0 +1,44 @@
+{
+    "_id": "2|None",
+    "id": "2",
+    "infons": {},
+    "passages": [
+        {
+            "infons": {
+                "journal": "Biochem. Biophys. Res. Commun.; 1975 Oct 27; 66(4) 1173-9",
+                "year": "1975",
+                "type": "title",
+                "authors": "Bose KS, Sarma RH",
+                "section": "Title"
+            },
+            "offset": 0,
+            "text": "Delineation of the intimate details of the backbone conformation of pyridine nucleotide coenzymes in aqueous solution.",
+            "sentences": [],
+            "annotations": [
+                {
+                    "id": "1",
+                    "infons": {"identifier": "-", "type": "Chemical"},
+                    "text": "pyridine nucleotide",
+                    "locations": [{"offset": 68, "length": 19}]
+                }
+            ],
+            "relations": []
+        },
+        {
+            "infons": {"type": "abstract", "section": "Abstract"},
+            "offset": 119,
+            "text": "",
+            "sentences": [],
+            "annotations": [],
+            "relations": []
+        }
+    ],
+    "relations": [],
+    "pmid": 2,
+    "pmcid": null,
+    "created": {"$date": 1592598838791},
+    "accessions": ["chemical@-"],
+    "journal": "Biochem. Biophys. Res. Commun.",
+    "year": 1975,
+    "authors": ["Bose KS", "Sarma RH"]
+}
