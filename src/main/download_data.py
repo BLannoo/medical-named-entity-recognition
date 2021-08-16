@@ -1,0 +1,62 @@
+from pathlib import Path
+
+import plac
+import requests
+from tqdm import tqdm
+
+from src.definitions import PROJECT_ROOT
+from src.logger import logger
+
+PUBTATOR_MAX_BATCH_SIZE = 1000
+
+
+def main(
+    location: Path = PROJECT_ROOT / "data/raw/pubtator",
+    first_batch_id: int = 0,
+    number_of_batches: int = 10,
+) -> None:
+    download_from_to(location, first_batch_id, number_of_batches)
+
+
+def download_from_to(
+    location: Path, first_batch_id: int, number_of_batches: int
+) -> None:
+    location.mkdir(exist_ok=True)
+    for batch_id in tqdm(range(first_batch_id, first_batch_id + number_of_batches)):
+        download_single_batch(location, batch_id * PUBTATOR_MAX_BATCH_SIZE)
+
+
+def download_single_batch(
+    location: Path,
+    start_id: int,
+) -> None:
+    if not location.exists():
+        raise ValueError(f"'{location=}' must exist already")
+
+    end_id = start_id + PUBTATOR_MAX_BATCH_SIZE - 1
+    file_location = location / f"{start_id}to{end_id}.jsonl"
+
+    try:
+        response = requests.post(
+            "https://www.ncbi.nlm.nih.gov/"
+            "research/pubtator-api/publications/export/biocjson",
+            json={"pmids": list(range(start_id, end_id + 1))},
+        )
+
+        if response.status_code != 200:
+            print(
+                f"[Error]: {response.status_code=} for {start_id=},"
+                f" with {response.text=}"
+            )
+        elif response.text == "":
+            print(f"[Error]: empty body for {start_id=}")
+        else:
+            file_location.write_text(response.text)
+            logger.info(f"Downloaded data to {file_location=}")
+
+    except ConnectionError as e:
+        print(f"[Exception]: for {start_id=}: {e}")
+
+
+if __name__ == "__main__":
+    plac.call(main)

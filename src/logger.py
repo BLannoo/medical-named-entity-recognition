@@ -11,4 +11,4 @@ formatter = logging.Formatter(fmt)
 handler.setFormatter(formatter)
 
 logger.addHandler(handler)
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.INFO)
