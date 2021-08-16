@@ -4,7 +4,7 @@ import pandas as pd
 from assertpy import assert_that
 
 from src.definitions import PROJECT_ROOT
-from src.preprocess_data import preprocess_data
+from src.main.preprocess_data import preprocess_data
 
 
 def test_preprocess_data(tmp_path: Path):
