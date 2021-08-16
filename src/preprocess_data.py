@@ -1,5 +1,4 @@
 import json
-from glob import glob
 from json import JSONDecodeError
 from pathlib import Path
 from typing import List
@@ -12,9 +11,16 @@ from tqdm import tqdm
 from src.definitions import PROJECT_ROOT
 
 
-def preprocess_data(
-    data_root: Path = PROJECT_ROOT / "data/raw",
+def main(
+    data_root: Path = PROJECT_ROOT / "data/raw/pubtator",
     output_dir: Path = PROJECT_ROOT / "data/processed",
+) -> None:
+    preprocess_data(data_root, output_dir)
+
+
+def preprocess_data(
+    data_root: Path,
+    output_dir: Path,
 ) -> None:
     examples = read_all_pubtator_examples(data_root)
 
@@ -34,17 +40,18 @@ def preprocess_data(
 
 def read_all_pubtator_examples(data_root: Path) -> List[dict]:
     examples = [
-        parse_pubtator_file(path)
-        for path in glob(str(data_root / "**/*.json"), recursive=True)
+        parse_pubtator_file(line)
+        for path in data_root.glob("*.jsonl")
+        for line in path.read_text().strip().split("\n")
     ]
     return examples
 
 
-def parse_pubtator_file(path: Path) -> dict:
+def parse_pubtator_file(json_line: str) -> dict:
     try:
-        return json.loads(Path(path).open().read())
+        return json.loads(json_line)
     except JSONDecodeError as e:
-        raise Exception(f"Failed to parse the pubtator json at: {path=}") from e
+        raise Exception(f"Failed to parse the pubtator json: {json_line=}") from e
 
 
 def parse_passage(
@@ -91,4 +98,4 @@ def persist(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 if __name__ == "__main__":
-    plac.call(preprocess_data)
+    plac.call(main)

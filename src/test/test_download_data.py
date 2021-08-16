@@ -47,9 +47,9 @@ def test_non_existing_location():
 def test_download_from_to(tmp_path: Path):
     # When
     download_from_to(
-        location=tmp_path,
-        first_batch_id=0,
         number_of_batches=2,
+        first_batch_id=0,
+        location=tmp_path,
     )
 
     # Then

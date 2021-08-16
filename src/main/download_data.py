@@ -11,15 +11,17 @@ PUBTATOR_MAX_BATCH_SIZE = 1000
 
 
 def main(
-    location: Path = PROJECT_ROOT / "data/raw/pubtator",
-    first_batch_id: int = 0,
     number_of_batches: int = 10,
+    first_batch_id: int = 0,
+    location: Path = PROJECT_ROOT / "data/raw/pubtator",
 ) -> None:
-    download_from_to(location, first_batch_id, number_of_batches)
+    download_from_to(number_of_batches, first_batch_id, location)
 
 
 def download_from_to(
-    location: Path, first_batch_id: int, number_of_batches: int
+    number_of_batches: int,
+    first_batch_id: int,
+    location: Path,
 ) -> None:
     location.mkdir(exist_ok=True)
     for batch_id in tqdm(range(first_batch_id, first_batch_id + number_of_batches)):
