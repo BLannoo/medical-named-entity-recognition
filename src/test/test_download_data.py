@@ -15,7 +15,7 @@ def test_download_first_batch(tmp_path: Path):
     )
 
     # Then
-    location = tmp_path / "0to999.jsonl"
+    location = tmp_path / "0to9999/0to999.jsonl"
     assert location.exists()
 
     downloaded_dicts = [
@@ -53,5 +53,5 @@ def test_download_from_to(tmp_path: Path):
     )
 
     # Then
-    assert (tmp_path / "0to999.jsonl").exists()
-    assert (tmp_path / "1000to1999.jsonl").exists()
+    assert (tmp_path / "0to9999/0to999.jsonl").exists()
+    assert (tmp_path / "0to9999/1000to1999.jsonl").exists()

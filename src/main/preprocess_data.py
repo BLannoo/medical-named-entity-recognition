@@ -41,7 +41,7 @@ def preprocess_data(
 def read_all_pubtator_examples(data_root: Path) -> List[dict]:
     examples = [
         parse_pubtator_file(line)
-        for path in data_root.glob("*.jsonl")
+        for path in data_root.glob("**/*.jsonl")
         for line in path.read_text().strip().split("\n")
     ]
     return examples

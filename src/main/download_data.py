@@ -35,8 +35,14 @@ def download_single_batch(
     if not location.exists():
         raise ValueError(f"'{location=}' must exist already")
 
+    folder_size = PUBTATOR_MAX_BATCH_SIZE * 10
+    folder_start_id = start_id // folder_size * folder_size
+    folder_end_id = folder_start_id + folder_size - 1
+    folder = location / f"{folder_start_id}to{folder_end_id}"
+    folder.mkdir(exist_ok=True)
+
     end_id = start_id + PUBTATOR_MAX_BATCH_SIZE - 1
-    file_location = location / f"{start_id}to{end_id}.jsonl"
+    file_location = folder / f"{start_id}to{end_id}.jsonl"
 
     try:
         response = requests.post(
