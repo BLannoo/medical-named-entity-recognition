@@ -20,3 +20,15 @@ python -m spacy download en_core_web_sm
 pip install -r requirements
 pre-commit install
 ```
+
+# Execution
+
+Download 100 batches of 1000 examples from pubtator
+```bash
+python src/main/download_data.py 100
+```
+
+Preprocess the data into a csv for each word from each fragment
+```bash
+python src/main/preprocess_data.py
+```
