@@ -73,11 +73,15 @@ def parse_passage(
 
 def determine_label(token, passage):
     all_labels = [
-        ("B-" if location["offset"] == token.idx else "I-")
+        ("B-" if location["offset"] - passage["offset"] == token.idx else "I-")
         + annotation["infons"]["type"]
         for annotation in passage["annotations"]
         for location in annotation["locations"]
-        if (location["offset"] <= token.idx < location["offset"] + location["length"])
+        if (
+            location["offset"] - passage["offset"]
+            <= token.idx
+            < location["offset"] - passage["offset"] + location["length"]
+        )
     ]
     if len(all_labels) == 0:
         return "O"
