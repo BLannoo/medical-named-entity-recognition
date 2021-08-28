@@ -1,4 +1,5 @@
 raw/*
 !raw/.gitkeep
+!raw/*.dvc
 processed/*
 !processed/.gitkeep

@@ -1,0 +1,5 @@
+outs:
+- md5: 05a6230055ad81630bed0e0b13dd3b89.dir
+  size: 45145799
+  nfiles: 20
+  path: pubtator
