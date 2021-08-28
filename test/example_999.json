@@ -1,0 +1,194 @@
+{
+  "_id": "999|None",
+  "id": "999",
+  "infons": {},
+  "passages": [
+    {
+      "infons": {
+        "journal": "Biochem. J.; 1975 Sep; 149(3) 669-74",
+        "year": "1975",
+        "article-id_pmc": "PMC1165673",
+        "type": "title",
+        "authors": "Abraham KA, Eikhom TS",
+        "section": "Title"
+      },
+      "offset": 0,
+      "text": "Determination of polyadenylate-rich ribonucleic acid in the nucleus and in the cytoplasm of plasmacytoma cells.",
+      "sentences": [],
+      "annotations": [
+        {
+          "id": "1",
+          "infons": {
+            "identifier": "-",
+            "type": "Chemical"
+          },
+          "text": "polyadenylate-rich ribonucleic acid",
+          "locations": [
+            {
+              "offset": 17,
+              "length": 35
+            }
+          ]
+        }
+      ],
+      "relations": []
+    },
+    {
+      "infons": {
+        "type": "abstract",
+        "section": "Abstract"
+      },
+      "offset": 112,
+      "text": "A number of parameters affecting the adsorption of rRNA and poly(A)-containing RNA to Millipore filters were investigated separately. Binding of both types of RNA to the filter was dependent on the concentration of RNA, pH and Mg2+ concentration of the reaction mixture. Both types of RNA bound to the filter optimally at slightly acid pH values. The binding of poly(A)-containing RNA to the filter exhibited a broad pH-dependence compared with that of rRNA. The ratio of poly(A)-rich RNA/rRNA retained by the filter was maximal between pH7 and 8. The presence of 1 mM-EDTA or a high concentration of NaCl (over 0.5M) decreased the affinity of RNA for the filter. The amount of poly(A)-containing RNA in the nucleus and in the cytoplasm of a plasmacytoma cell line (MPC-11) labelled with [32P]Pi was determined by the Millipore-filter technique under conditions that minimized contamination by rRNA. These data were compared with the estimations made by oligo(dT)-cellulose chromatography. The results obtained by these two methods were in good agreement for RNA labelled for short periods (up to 2h). In long labelling and pulse-chase experiments, however, contamination of the filter by rRNA of increasing specific radioactivity in the cytoplasm gave an erroneous value for poly(A)-containing RNA by the Millipore-filter technique. Determinations made on the nuclear fraction by these two methods did not show significant variation in short- and long-term labelling experiments.",
+      "sentences": [],
+      "annotations": [
+        {
+          "id": "11",
+          "infons": {
+            "identifier": "MESH:D011061",
+            "type": "Chemical"
+          },
+          "text": "poly(A)",
+          "locations": [
+            {
+              "offset": 172,
+              "length": 7
+            }
+          ]
+        },
+        {
+          "id": "12",
+          "infons": {
+            "identifier": "-",
+            "type": "Chemical"
+          },
+          "text": "Mg2+",
+          "locations": [
+            {
+              "offset": 339,
+              "length": 4
+            }
+          ]
+        },
+        {
+          "id": "13",
+          "infons": {
+            "identifier": "MESH:D011061",
+            "type": "Chemical"
+          },
+          "text": "poly(A)",
+          "locations": [
+            {
+              "offset": 474,
+              "length": 7
+            }
+          ]
+        },
+        {
+          "id": "14",
+          "infons": {
+            "identifier": "MESH:D011061",
+            "type": "Chemical"
+          },
+          "text": "poly(A)",
+          "locations": [
+            {
+              "offset": 584,
+              "length": 7
+            }
+          ]
+        },
+        {
+          "id": "15",
+          "infons": {
+            "identifier": "MESH:D004492",
+            "type": "Chemical"
+          },
+          "text": "-EDTA",
+          "locations": [
+            {
+              "offset": 680,
+              "length": 5
+            }
+          ]
+        },
+        {
+          "id": "16",
+          "infons": {
+            "identifier": "MESH:D012965",
+            "type": "Chemical"
+          },
+          "text": "NaCl",
+          "locations": [
+            {
+              "offset": 713,
+              "length": 4
+            }
+          ]
+        },
+        {
+          "id": "17",
+          "infons": {
+            "identifier": "MESH:D011061",
+            "type": "Chemical"
+          },
+          "text": "poly(A)",
+          "locations": [
+            {
+              "offset": 790,
+              "length": 7
+            }
+          ]
+        },
+        {
+          "id": "18",
+          "infons": {
+            "identifier": "MESH:C000615311",
+            "type": "Chemical"
+          },
+          "text": "32P",
+          "locations": [
+            {
+              "offset": 901,
+              "length": 3
+            }
+          ]
+        },
+        {
+          "id": "19",
+          "infons": {
+            "identifier": "MESH:D011061",
+            "type": "Chemical"
+          },
+          "text": "poly(A)",
+          "locations": [
+            {
+              "offset": 1388,
+              "length": 7
+            }
+          ]
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "relations": [],
+  "pmid": 999,
+  "pmcid": null,
+  "created": {
+    "$date": 1592598838791
+  },
+  "accessions": [
+    "chemical@MESH:D004492",
+    "chemical@-",
+    "chemical@MESH:C000615311",
+    "chemical@MESH:D011061",
+    "chemical@MESH:D012965"
+  ],
+  "journal": "Biochem. J.",
+  "year": 1975,
+  "authors": [
+    "Abraham KA",
+    "Eikhom TS"
+  ]
+}

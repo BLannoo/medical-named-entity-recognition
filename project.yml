@@ -1,0 +1,80 @@
+title: "Medical Named Entity Recognition"
+description: "This project uses Pubtator data to re-create my own medical NER model"
+vars:
+  config: "config.cfg"
+  name: "medical-named-entity-recognition"
+  version: "0.0.0"
+  train: "0to999"
+  eval: "1000to1999"
+directories: ["assets", "training", "configs", "scripts", "corpus", "packages"]
+assets:
+  - dest: "assets/${vars.train}.jsonl"
+    checksum: "09e14b0ea947c681acea92ea2b94bb03"
+    description: "JSONL-formatted first 1000 pubtator examples"
+  - dest: "assets/${vars.eval}.jsonl"
+    checksum: "3a01993807f2061120d6d870844929f1"
+    description: "JSONL-formatted second 1000 pubtator examples"
+workflows:
+  all:
+    - "preprocess"
+    - "train"
+    - "evaluate"
+commands:
+  - name: "preprocess"
+    help: "Convert the data to spaCy's binary format"
+    script:
+      - "python scripts/preprocess.py assets/${vars.train}.jsonl corpus/${vars.train}.spacy"
+      - "python scripts/preprocess.py assets/${vars.eval}.jsonl corpus/${vars.eval}.spacy"
+    deps:
+      - "assets/${vars.train}.jsonl"
+      - "assets/${vars.eval}.jsonl"
+      - "scripts/preprocess.py"
+    outputs:
+      - "corpus/${vars.train}.spacy"
+      - "corpus/${vars.eval}.spacy"
+
+  - name: "train"
+    help: "Train a named entity recognition model"
+    script:
+      - "python -m spacy train configs/${vars.config} --output training/ --paths.train corpus/${vars.train}.spacy --paths.dev corpus/${vars.eval}.spacy --paths.vectors en_core_web_md"
+    deps:
+      - "corpus/${vars.train}.spacy"
+      - "corpus/${vars.eval}.spacy"
+    outputs:
+      - "training/model-best"
+
+  - name: "evaluate"
+    help: "Evaluate the model and export metrics"
+    script:
+      - "python -m spacy evaluate training/model-best corpus/${vars.eval}.spacy --output training/metrics.json"
+    deps:
+      - "corpus/${vars.eval}.spacy"
+      - "training/model-best"
+    outputs:
+      - "training/metrics.json"
+
+  - name: "package"
+    help: "Package the trained model so it can be installed"
+    script:
+      - "python -m spacy package training/model-best packages --name ${vars.name} --version ${vars.version} --force"
+    deps:
+      - "training/model-best"
+    outputs_no_cache:
+      - "packages/en_${vars.name}-${vars.version}/dist/en_${vars.name}-${vars.version}.tar.gz"
+
+  - name: "visualize-model"
+    help: "Visualize the model's output interactively using Streamlit"
+    script:
+      - "streamlit run scripts/visualize_model.py training/model-best \"He was prescribed Aspirin.\""
+    deps:
+      - "scripts/visualize_model.py"
+      - "training/model-best"
+
+  - name: "visualize-data"
+    help: "Explore the annotated data in an interactive Streamlit app"
+    script:
+      - "streamlit run scripts/visualize_data.py assets/${vars.train}.jsonl,assets/${vars.eval}.jsonl"
+    deps:
+      - "scripts/visualize_data.py"
+      - "assets/${vars.train}.jsonl"
+      - "assets/${vars.eval}.jsonl"

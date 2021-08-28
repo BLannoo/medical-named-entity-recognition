@@ -1,0 +1,49 @@
+preprocess:
+  cmd: python -m spacy run preprocess
+  script:
+    - python scripts/preprocess.py assets/0to999.jsonl corpus/0to999.spacy
+    - python scripts/preprocess.py assets/1000to1999.jsonl corpus/1000to1999.spacy
+  deps:
+    - path: assets/0to999.jsonl
+      md5: 09e14b0ea947c681acea92ea2b94bb03
+    - path: assets/1000to1999.jsonl
+      md5: 3a01993807f2061120d6d870844929f1
+    - path: scripts/preprocess.py
+      md5: 715716cc114559298871c2f32a1dc009
+  outs:
+    - path: corpus/0to999.spacy
+      md5: bc0c411b788f3f6756b0e5ab776813be
+    - path: corpus/1000to1999.spacy
+      md5: dff9319f8b293ba35d3822697f607c09
+  spacy_version: 3.1.0
+  spacy_git_version: 530b5d72f
+train:
+  cmd: python -m spacy run train
+  script:
+    - python -m spacy train configs/config.cfg --output training/ --paths.train corpus/0to999.spacy
+      --paths.dev corpus/1000to1999.spacy --paths.vectors en_core_web_md
+  deps:
+    - path: corpus/0to999.spacy
+      md5: bc0c411b788f3f6756b0e5ab776813be
+    - path: corpus/1000to1999.spacy
+      md5: dff9319f8b293ba35d3822697f607c09
+  outs:
+    - path: training/model-best
+      md5: eab46163e1dfa307242f9149e5d29914
+  spacy_version: 3.1.0
+  spacy_git_version: 530b5d72f
+evaluate:
+  cmd: python -m spacy run evaluate
+  script:
+    - python -m spacy evaluate training/model-best corpus/1000to1999.spacy --output
+      training/metrics.json
+  deps:
+    - path: corpus/1000to1999.spacy
+      md5: dff9319f8b293ba35d3822697f607c09
+    - path: training/model-best
+      md5: eab46163e1dfa307242f9149e5d29914
+  outs:
+    - path: training/metrics.json
+      md5: 9f1533e2f1a9dfbba3e36e8bb7e6c467
+  spacy_version: 3.1.0
+  spacy_git_version: 530b5d72f
