@@ -6,40 +6,41 @@ vars:
   version: "0.0.0"
   train: "0to999"
   eval: "1000to1999"
-directories: ["assets", "training", "configs", "scripts", "corpus", "packages"]
-assets:
-  - dest: "assets/${vars.train}.jsonl"
-    checksum: "09e14b0ea947c681acea92ea2b94bb03"
-    description: "JSONL-formatted first 1000 pubtator examples"
-  - dest: "assets/${vars.eval}.jsonl"
-    checksum: "3a01993807f2061120d6d870844929f1"
-    description: "JSONL-formatted second 1000 pubtator examples"
+directories: [ "assets", "training", "configs", "scripts", "corpus", "packages" ]
 workflows:
   all:
+    - "download_data"
     - "preprocess"
     - "train"
     - "evaluate"
 commands:
+  - name: "download_data"
+    help: "Download data from pubtator"
+    script:
+      - "python scripts/download_data.py --last-id 10000"
+    deps:
+      - "scripts/download_data.py"
+    outputs:
+      - "data/raw/pubtator/from1to10000.jsonl"
+
   - name: "preprocess"
     help: "Convert the data to spaCy's binary format"
     script:
-      - "python scripts/preprocess.py assets/${vars.train}.jsonl corpus/${vars.train}.spacy"
-      - "python scripts/preprocess.py assets/${vars.eval}.jsonl corpus/${vars.eval}.spacy"
+      - "python scripts/preprocess.py data/raw/pubtator/from1to10000.jsonl"
     deps:
-      - "assets/${vars.train}.jsonl"
-      - "assets/${vars.eval}.jsonl"
+      - "data/raw/pubtator/from1to10000.jsonl"
       - "scripts/preprocess.py"
     outputs:
-      - "corpus/${vars.train}.spacy"
-      - "corpus/${vars.eval}.spacy"
+      - "corpus/train.spacy"
+      - "corpus/eval.spacy"
 
   - name: "train"
     help: "Train a named entity recognition model"
     script:
-      - "python -m spacy train configs/${vars.config} --output training/ --paths.train corpus/${vars.train}.spacy --paths.dev corpus/${vars.eval}.spacy --paths.vectors en_core_web_md"
+      - "python -m spacy train configs/${vars.config} --output training/ --paths.train corpus/train.spacy --paths.dev corpus/eval.spacy --paths.vectors en_core_web_md"
     deps:
-      - "corpus/${vars.train}.spacy"
-      - "corpus/${vars.eval}.spacy"
+      - "corpus/train.spacy"
+      - "corpus/eval.spacy"
     outputs:
       - "training/model-best"
 

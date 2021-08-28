@@ -1,32 +1,46 @@
+import random
 from pathlib import Path
-from typing import Tuple, List
+from typing import List
 
 import spacy
 import srsly
 import typer
 from spacy.tokens import DocBin, Span, Doc
 
+from src.definitions import PROJECT_ROOT
+
 
 def main(
     input_path: Path = typer.Argument(..., exists=True, dir_okay=False),
-    output_path: Path = typer.Argument(..., dir_okay=False),
+    output_path: Path = PROJECT_ROOT / "corpus",
+    train_fraction: float = 0.75,
 ):
     nlp = spacy.blank("en")
-    doc_bin = DocBin(attrs=["ENT_IOB", "ENT_TYPE"])
-    skipped_annotations = 0
-    for example in srsly.read_jsonl(input_path):
-        docs, skipped_annotations_single_example = process_passages(example, nlp)
-        skipped_annotations += skipped_annotations_single_example
-        for doc in docs:
-            doc_bin.add(doc)
-    doc_bin.to_disk(output_path)
-    print(f"Processed {len(doc_bin)} documents: {output_path.name}")
-    print(f"{skipped_annotations=}")
+    examples = list(srsly.read_jsonl(input_path))
+
+    random.shuffle(examples)
+    split_index_between_training_and_testing = int(len(examples) * train_fraction)
+
+    train_examples = examples[:split_index_between_training_and_testing]
+    output_train = output_path / "train.spacy"
+    preprocess_and_persist(nlp, train_examples, output_train)
+
+    eval_examples = examples[split_index_between_training_and_testing:]
+    output_eval = output_path / "eval.spacy"
+    preprocess_and_persist(nlp, eval_examples, output_eval)
 
 
-def process_passages(example, nlp) -> Tuple[List[spacy.tokens.doc.Doc], int]:
+def preprocess_and_persist(nlp, train_examples, output_file):
+    doc_bin_train = DocBin(attrs=["ENT_IOB", "ENT_TYPE"])
+    for example in train_examples:
+        for doc in process_passages(example, nlp):
+            doc_bin_train.add(doc)
+    doc_bin_train.to_disk(output_file)
+    print(f"Processed {len(doc_bin_train)} documents: {output_file.name}")
+
+
+def process_passages(example, nlp) -> List[spacy.tokens.doc.Doc]:
     docs = []
-    skipped_annotations = 0
     for passage in example["passages"]:
         if passage["text"] != "":
             doc = nlp(passage["text"])
@@ -36,13 +50,11 @@ def process_passages(example, nlp) -> Tuple[List[spacy.tokens.doc.Doc], int]:
                 span = annotation_to_span(doc, annotation, passage["offset"])
                 if span is not None:
                     entities.append(span)
-                else:
-                    skipped_annotations += 1
 
             doc.ents = entities
 
             docs.append(doc)
-    return docs, skipped_annotations
+    return docs
 
 
 def annotation_to_span(doc: Doc, annotation: dict, passage_offset: int) -> Span:

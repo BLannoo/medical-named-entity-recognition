@@ -1,37 +1,34 @@
 preprocess:
   cmd: python -m spacy run preprocess
   script:
-    - python scripts/preprocess.py assets/0to999.jsonl corpus/0to999.spacy
-    - python scripts/preprocess.py assets/1000to1999.jsonl corpus/1000to1999.spacy
+    - python scripts/preprocess.py data/raw/pubtator/from1to10000.jsonl
   deps:
-    - path: assets/0to999.jsonl
-      md5: 09e14b0ea947c681acea92ea2b94bb03
-    - path: assets/1000to1999.jsonl
-      md5: 3a01993807f2061120d6d870844929f1
+    - path: data/raw/pubtator/from1to10000.jsonl
+      md5: 29ed82cd160d606a4fe4d6e3c527a4f0
     - path: scripts/preprocess.py
-      md5: 715716cc114559298871c2f32a1dc009
+      md5: 252040f0fa71ee45c22bfc3987832ab5
   outs:
-    - path: corpus/0to999.spacy
-      md5: bc0c411b788f3f6756b0e5ab776813be
-    - path: corpus/1000to1999.spacy
-      md5: dff9319f8b293ba35d3822697f607c09
-  spacy_version: 3.1.0
-  spacy_git_version: 530b5d72f
+    - path: corpus/train.spacy
+      md5: a891bdfa3a167f68ac4a9e0b12a46920
+    - path: corpus/eval.spacy
+      md5: 9fe660f222de9945b3e546835b8ebfcc
+  spacy_version: 3.1.2
+  spacy_git_version: e1f88de72
 train:
   cmd: python -m spacy run train
   script:
-    - python -m spacy train configs/config.cfg --output training/ --paths.train corpus/0to999.spacy
-      --paths.dev corpus/1000to1999.spacy --paths.vectors en_core_web_md
+    - python -m spacy train configs/config.cfg --output training/ --paths.train corpus/train.spacy
+      --paths.dev corpus/eval.spacy --paths.vectors en_core_web_md
   deps:
-    - path: corpus/0to999.spacy
-      md5: bc0c411b788f3f6756b0e5ab776813be
-    - path: corpus/1000to1999.spacy
-      md5: dff9319f8b293ba35d3822697f607c09
+    - path: corpus/train.spacy
+      md5: a891bdfa3a167f68ac4a9e0b12a46920
+    - path: corpus/eval.spacy
+      md5: 9fe660f222de9945b3e546835b8ebfcc
   outs:
     - path: training/model-best
-      md5: eab46163e1dfa307242f9149e5d29914
-  spacy_version: 3.1.0
-  spacy_git_version: 530b5d72f
+      md5: 9e216542a92951b9ca53969e36ab6763
+  spacy_version: 3.1.2
+  spacy_git_version: e1f88de72
 evaluate:
   cmd: python -m spacy run evaluate
   script:
@@ -41,9 +38,21 @@ evaluate:
     - path: corpus/1000to1999.spacy
       md5: dff9319f8b293ba35d3822697f607c09
     - path: training/model-best
-      md5: eab46163e1dfa307242f9149e5d29914
+      md5: 9e216542a92951b9ca53969e36ab6763
   outs:
     - path: training/metrics.json
-      md5: 9f1533e2f1a9dfbba3e36e8bb7e6c467
-  spacy_version: 3.1.0
-  spacy_git_version: 530b5d72f
+      md5: 6cb0c423057997004f764e027ec19258
+  spacy_version: 3.1.2
+  spacy_git_version: e1f88de72
+download_data:
+  cmd: python -m spacy run download_data
+  script:
+    - python scripts/download_data.py --last-id 10000
+  deps:
+    - path: scripts/download_data.py
+      md5: 609130e591910d11eb7d5f398dff29c5
+  outs:
+    - path: data/raw/pubtator/from1to10000.jsonl
+      md5: 29ed82cd160d606a4fe4d6e3c527a4f0
+  spacy_version: 3.1.2
+  spacy_git_version: e1f88de72
