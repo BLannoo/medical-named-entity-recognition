@@ -54,13 +54,19 @@ def main(file_paths: str):
     }
     st.header(f"{data_file} ({len(data)})")
     wrapper = "<div style='border-bottom: 1px solid #ccc; padding: 20px 0'>{}</div>"
-    for row in data:
+    MAX_EXAMPLES_DISPLAYED = 100
+    for row in data[:MAX_EXAMPLES_DISPLAYED]:
         html = displacy.render(row, **displacy_settings).replace("\n\n", "\n")
         st.markdown(wrapper.format(html), unsafe_allow_html=True)
+    if len(data) > MAX_EXAMPLES_DISPLAYED:
+        st.markdown(
+            f"Only displays the first {MAX_EXAMPLES_DISPLAYED} examples"
+            f" out of {len(data)}"
+        )
 
     st.sidebar.markdown(
         f"""
-    | `{data_file}` | |
+    | `...{data_file[-20:]}` | |
     | --- | ---: |
     | Total examples | {len(data):,} |
     | Total entities | {n_total_ents:,} |

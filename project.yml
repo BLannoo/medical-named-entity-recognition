@@ -4,8 +4,7 @@ vars:
   config: "config.cfg"
   name: "medical-named-entity-recognition"
   version: "0.0.0"
-  train: "0to999"
-  eval: "1000to1999"
+  last_pubtator_id: 10000
 directories: [ "assets", "training", "configs", "scripts", "corpus", "packages" ]
 workflows:
   all:
@@ -26,7 +25,7 @@ commands:
   - name: "preprocess"
     help: "Convert the data to spaCy's binary format"
     script:
-      - "python scripts/preprocess.py data/raw/pubtator/from1to10000.jsonl"
+      - "python scripts/preprocess.py data/raw/pubtator/from1to${vars.last_pubtator_id}.jsonl"
     deps:
       - "data/raw/pubtator/from1to10000.jsonl"
       - "scripts/preprocess.py"
@@ -47,9 +46,9 @@ commands:
   - name: "evaluate"
     help: "Evaluate the model and export metrics"
     script:
-      - "python -m spacy evaluate training/model-best corpus/${vars.eval}.spacy --output training/metrics.json"
+      - "python -m spacy evaluate training/model-best corpus/eval.spacy --output training/metrics.json"
     deps:
-      - "corpus/${vars.eval}.spacy"
+      - "corpus/eval.spacy"
       - "training/model-best"
     outputs:
       - "training/metrics.json"
@@ -74,8 +73,7 @@ commands:
   - name: "visualize-data"
     help: "Explore the annotated data in an interactive Streamlit app"
     script:
-      - "streamlit run scripts/visualize_data.py assets/${vars.train}.jsonl,assets/${vars.eval}.jsonl"
+      - "streamlit run scripts/visualize_data.py data/raw/pubtator/from1to${vars.last_pubtator_id}.jsonl"
     deps:
       - "scripts/visualize_data.py"
-      - "assets/${vars.train}.jsonl"
-      - "assets/${vars.eval}.jsonl"
+      - "data/raw/pubtator/from1to${vars.last_pubtator_id}.jsonl"

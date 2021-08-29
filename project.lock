@@ -6,12 +6,12 @@ preprocess:
     - path: data/raw/pubtator/from1to10000.jsonl
       md5: 29ed82cd160d606a4fe4d6e3c527a4f0
     - path: scripts/preprocess.py
-      md5: 252040f0fa71ee45c22bfc3987832ab5
+      md5: 2d0445a302b9a576cf4f6262cde83fcf
   outs:
     - path: corpus/train.spacy
-      md5: a891bdfa3a167f68ac4a9e0b12a46920
+      md5: f0a29dd7407c2fb70247d15c8d22bd74
     - path: corpus/eval.spacy
-      md5: 9fe660f222de9945b3e546835b8ebfcc
+      md5: 14b776b46833b8409d3ce3309844eb6d
   spacy_version: 3.1.2
   spacy_git_version: e1f88de72
 train:
