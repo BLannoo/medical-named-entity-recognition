@@ -1,39 +1,41 @@
 """Visualize the data with Streamlit and spaCy."""
+from pathlib import Path
+from typing import Tuple, List, Set
+
 import spacy
-import srsly
 import streamlit as st
 import typer
 from spacy import displacy
 
-from preprocess import process_passages
+from ner_sentence import NerSentence
 
 
 @st.cache(allow_output_mutation=True)
-def load_data(filepath):
-    examples = list(srsly.read_jsonl(filepath))
+def load_data(filepath: Path) -> Tuple[List[dict], Set[str], int, int]:
+    sentences = NerSentence.from_pubtator_jsonl(filepath)
     rows = []
     n_total_ents = 0
     n_no_ents = 0
     labels = set()
     nlp = spacy.blank("en")
-    for example in examples:
-        for doc in process_passages(example, nlp):
-            ents = [
-                {
-                    "start": span.start_char,
-                    "end": span.end_char,
-                    "token_start": span.start,
-                    "token_end": span.end,
-                    "label": span.label_,
-                }
-                for span in doc.ents
-            ]
-            row = {"text": doc.text, "ents": ents}
-            n_total_ents += len(row["ents"])
-            if not row["ents"]:
-                n_no_ents += 1
-            labels.update([span["label"] for span in row["ents"]])
-            rows.append(row)
+    for sentence in sentences:
+        doc = sentence.as_spacy_doc(nlp)
+        ents = [
+            {
+                "start": span.start_char,
+                "end": span.end_char,
+                "token_start": span.start,
+                "token_end": span.end,
+                "label": span.label_,
+            }
+            for span in doc.ents
+        ]
+        row = {"text": doc.text, "ents": ents}
+        n_total_ents += len(row["ents"])
+        if not row["ents"]:
+            n_no_ents += 1
+        labels.update([span["label"] for span in row["ents"]])
+        rows.append(row)
     return rows, labels, n_total_ents, n_no_ents
 
 
@@ -46,7 +48,7 @@ def main(file_paths: str):
         "and view stats about the datasets."
     )
     data_file = st.sidebar.selectbox("Dataset", files)
-    data, labels, n_total_ents, n_no_ents = load_data(data_file)
+    data, labels, n_total_ents, n_no_ents = load_data(Path(data_file))
     displacy_settings = {
         "style": "ent",
         "manual": True,

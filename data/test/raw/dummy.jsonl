@@ -1,0 +1,2 @@
+{"id": "1", "passages": [{"offset": 0, "text": "A dummy title, with a dummyentity", "annotations": [{"infons": {"type": "dummy-label"}, "text": "dummyentity", "locations": [{"offset": 22, "length": 11}]}]}, {"offset": 65, "text": "A dummy abstract, with a dummyentity", "annotations": [{"infons": {"type": "dummy-label"}, "text": "dummyentity", "locations": [{"offset": 90, "length": 11}]}]}]}
+{"id": "2", "passages": [{"offset": 0, "text": "Another dummy title", "annotations": []}, {"offset": 0, "text": "", "annotations": []}]}

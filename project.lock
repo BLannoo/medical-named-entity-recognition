@@ -6,12 +6,12 @@ preprocess:
     - path: data/raw/pubtator/from1to10000.jsonl
       md5: 29ed82cd160d606a4fe4d6e3c527a4f0
     - path: scripts/preprocess.py
-      md5: 2d0445a302b9a576cf4f6262cde83fcf
+      md5: bfd2f32efe0046046ef2e5bf634ad738
   outs:
     - path: corpus/train.spacy
-      md5: f0a29dd7407c2fb70247d15c8d22bd74
+      md5: 6b6f4eb95469a1c6b23db51e775df58b
     - path: corpus/eval.spacy
-      md5: 14b776b46833b8409d3ce3309844eb6d
+      md5: 4ae4695c61b9249c2073b3897b5d7e45
   spacy_version: 3.1.2
   spacy_git_version: e1f88de72
 train:
@@ -21,27 +21,26 @@ train:
       --paths.dev corpus/eval.spacy --paths.vectors en_core_web_md
   deps:
     - path: corpus/train.spacy
-      md5: a891bdfa3a167f68ac4a9e0b12a46920
+      md5: 6b6f4eb95469a1c6b23db51e775df58b
     - path: corpus/eval.spacy
-      md5: 9fe660f222de9945b3e546835b8ebfcc
+      md5: 4ae4695c61b9249c2073b3897b5d7e45
   outs:
     - path: training/model-best
-      md5: 9e216542a92951b9ca53969e36ab6763
+      md5: ff95165b7bb4e6154c78e226082fe016
   spacy_version: 3.1.2
   spacy_git_version: e1f88de72
 evaluate:
   cmd: python -m spacy run evaluate
   script:
-    - python -m spacy evaluate training/model-best corpus/1000to1999.spacy --output
-      training/metrics.json
+    - python -m spacy evaluate training/model-best corpus/eval.spacy --output training/metrics.json
   deps:
-    - path: corpus/1000to1999.spacy
-      md5: dff9319f8b293ba35d3822697f607c09
+    - path: corpus/eval.spacy
+      md5: 4ae4695c61b9249c2073b3897b5d7e45
     - path: training/model-best
-      md5: 9e216542a92951b9ca53969e36ab6763
+      md5: ff95165b7bb4e6154c78e226082fe016
   outs:
     - path: training/metrics.json
-      md5: 6cb0c423057997004f764e027ec19258
+      md5: d93abfec2c75b0426d8dbe643ad66665
   spacy_version: 3.1.2
   spacy_git_version: e1f88de72
 download_data:
@@ -50,7 +49,7 @@ download_data:
     - python scripts/download_data.py --last-id 10000
   deps:
     - path: scripts/download_data.py
-      md5: 609130e591910d11eb7d5f398dff29c5
+      md5: 24d9e7a195897becefbe94d471da62f0
   outs:
     - path: data/raw/pubtator/from1to10000.jsonl
       md5: 29ed82cd160d606a4fe4d6e3c527a4f0

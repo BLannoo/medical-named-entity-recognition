@@ -12,6 +12,7 @@ joblib==1.0.1
 typer==0.3.2
 spacy-streamlit>=1.0.0a0
 streamlit==0.87.0
+pydantic==1.8.2
 
 # Test dependencies
 pytest==6.2.4
@@ -22,6 +23,7 @@ black==21.6b0
 pre-commit==2.13.0
 jupyterlab==3.0.16
 nbstripout==0.5.0
+datamodel-code-generator==0.11.12
 
 # Self
 -e .

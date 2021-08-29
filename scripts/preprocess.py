@@ -3,10 +3,12 @@ from pathlib import Path
 from typing import List
 
 import spacy
-import srsly
 import typer
-from spacy.tokens import DocBin, Span, Doc
+from spacy import Language
+from spacy.tokens import DocBin
+from tqdm import tqdm
 
+from ner_sentence import NerSentence
 from src.definitions import PROJECT_ROOT
 
 
@@ -16,7 +18,7 @@ def main(
     train_fraction: float = 0.75,
 ):
     nlp = spacy.blank("en")
-    examples = list(srsly.read_jsonl(input_path))
+    examples = NerSentence.from_pubtator_jsonl(input_path)
 
     random.shuffle(examples)
     split_index_between_training_and_testing = int(len(examples) * train_fraction)
@@ -30,41 +32,18 @@ def main(
     preprocess_and_persist(nlp, eval_examples, output_eval)
 
 
-def preprocess_and_persist(nlp, train_examples, output_file):
-    doc_bin_train = DocBin(attrs=["ENT_IOB", "ENT_TYPE"])
-    for example in train_examples:
-        for doc in process_passages(example, nlp):
-            doc_bin_train.add(doc)
-    doc_bin_train.to_disk(output_file)
-    print(f"Processed {len(doc_bin_train)} documents: {output_file.name}")
-
-
-def process_passages(example, nlp) -> List[spacy.tokens.doc.Doc]:
-    docs = []
-    for passage in example["passages"]:
-        if passage["text"] != "":
-            doc = nlp(passage["text"])
-
-            entities = []
-            for annotation in passage["annotations"]:
-                span = annotation_to_span(doc, annotation, passage["offset"])
-                if span is not None:
-                    entities.append(span)
-
-            doc.ents = entities
-
-            docs.append(doc)
-    return docs
-
-
-def annotation_to_span(doc: Doc, annotation: dict, passage_offset: int) -> Span:
-    location = annotation["locations"][0]
-    start = location["offset"] - passage_offset
-    return doc.char_span(
-        start,
-        start + location["length"],
-        label=annotation["infons"]["type"],
-    )
+def preprocess_and_persist(
+    nlp: Language,
+    train_examples: List[NerSentence],
+    output_file: Path,
+):
+    doc_bin = DocBin(attrs=["ENT_IOB", "ENT_TYPE"])
+    for ner_sentence in tqdm(
+        train_examples, desc=f"preprocessing sentences for {output_file}"
+    ):
+        doc_bin.add(ner_sentence.as_spacy_doc(nlp))
+    doc_bin.to_disk(output_file)
+    print(f"Processed {len(doc_bin)} documents: {output_file.name}")
 
 
 if __name__ == "__main__":
