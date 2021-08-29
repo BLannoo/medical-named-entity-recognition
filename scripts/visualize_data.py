@@ -17,7 +17,7 @@ def load_data(filepath):
     labels = set()
     nlp = spacy.blank("en")
     for example in examples:
-        for doc in process_passages(example, nlp)[0]:
+        for doc in process_passages(example, nlp):
             ents = [
                 {
                     "start": span.start_char,
